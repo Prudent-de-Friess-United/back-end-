@@ -2,6 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const helmet = require("helmet");
 
+//route to endpoint routers
 const configureRoutes = require("../config/routes.js");
 
 const server = express();
