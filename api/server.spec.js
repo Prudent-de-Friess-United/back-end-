@@ -79,40 +79,4 @@ describe("SERVER & AUTHORIZATION", () => {
       });
     });
   });
-
-  describe("Users", () => {
-    it("should return status unauthorized", () => {
-      return request(server)
-        .get("/users")
-        .then(res => {
-          expect(res.status).toBe(401);
-        });
-    });
-
-    it("should return users", () => {
-      return request(server)
-        .get("/users")
-        .then(response => {
-          expect(response.body.users);
-        });
-    });
-  });
-
-  describe("Items", () => {
-    it("should return status unauthorized", () => {
-      return request(server)
-        .get("/items")
-        .then(res => {
-          expect(res.status).toBe(401);
-        });
-    });
-
-    it("should return items", () => {
-      return request(server)
-        .get("/items")
-        .then(response => {
-          expect(response.body.items);
-        });
-    });
-  });
 });
