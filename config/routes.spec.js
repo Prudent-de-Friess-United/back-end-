@@ -21,7 +21,15 @@ describe("Server Test", () => {
         .post("/auth/register")
         .send(user)
         .then(res => {
+          let { id, username, department } = res.body;
           expect(res.status).toBe(201);
+          expect(res.body).toHaveProperty("id");
+          expect(res.type).toBe("application/json");
+          expect(res.body).toMatchObject({
+            id: id,
+            username: username,
+            department: department
+          });
         });
     });
 
@@ -47,7 +55,12 @@ describe("Server Test", () => {
         .post("/auth/login")
         .send(user)
         .then(res => {
+          let {message} = res.body;
           expect(res.status).toBe(200);
+          //expect(res.body).toHaveProperty("id");
+          expect(res.type).toBe("application/json");
+          expect(res.body).toMatchObject({ message: message });
+          expect(res.body).toHaveProperty("token");
         });
     });
   });
@@ -57,19 +70,12 @@ describe("Server Test", () => {
       const register = await request(server)
         .post("/auth/login")
         .send(user);
-      const remove = await request(server).delete(`/users/${register.body.id}`);
-      expect(remove.status).toBe(201);
-
-      // return request(server)
-      //   .post("/auth/login")
-      //   .send(user)
-      //   .del("/users/1")
-      //   .then(res=>{
-      //     expect(res.status).toBe(201);
-      //   })
-      // const put = await request(server)
-
-      //   expect(put.status).toBe(201);
+      let token = register.body.token;
+      const remove = await request(server)
+        .delete(`/users/${register.body.id}`)
+        .set("authorization", token);
+      expect(remove.status).toBe(200);
+      expect(remove.type).toBe("application/json");
     });
   });
 });
