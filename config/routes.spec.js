@@ -42,7 +42,7 @@ describe("Server Test", () => {
   });
 
   describe("Login Test", () => {
-    it("Should Return 200", () => {
+    it("Should Return 200", async () => {
       return request(server)
         .post("/auth/login")
         .send(user)
@@ -51,4 +51,26 @@ describe("Server Test", () => {
         });
     });
   });
+
+  describe("Delete user test", () => {
+    it("Should return 201", async () => {
+      const register = await request(server)
+        .post("/auth/login")
+        .send(user);
+      const remove = await request(server).delete(`/users/${register.body.id}`);
+      expect(remove.status).toBe(201);
+
+      // return request(server)
+      //   .post("/auth/login")
+      //   .send(user)
+      //   .del("/users/1")
+      //   .then(res=>{
+      //     expect(res.status).toBe(201);
+      //   })
+      // const put = await request(server)
+
+      //   expect(put.status).toBe(201);
+    });
+  });
 });
+/* */
