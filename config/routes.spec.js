@@ -4,7 +4,7 @@ const server = require("../api/server");
 const db = require("../data/dbConfig.js");
 
 describe("Server Test", () => {
-  it("db enviornemt test || set to testing", () => {
+  it("db environment test || set to testing", () => {
     expect(process.env.DB_ENV).toBe("testing");
   });
 
@@ -14,6 +14,14 @@ describe("Server Test", () => {
 
   const user = { username: "dirt", password: "password", department: "buyer" };
   const user2 = { username: "sky", password: "password", department: "seller" };
+
+  const item1 = {"name": "Shoes",
+  "description": "Running Shoes",
+  "price": "456",
+  "location": "Congo",
+  "category": "Clothing",
+  "URL": "https://fake.url",
+  "user_id":1};
 
   describe("Register test", () => {
     it("Should return 201 status", () => {
@@ -55,7 +63,7 @@ describe("Server Test", () => {
         .post("/auth/login")
         .send(user)
         .then(res => {
-          let {message} = res.body;
+          let { message } = res.body;
           expect(res.status).toBe(200);
           //expect(res.body).toHaveProperty("id");
           expect(res.type).toBe("application/json");
@@ -66,7 +74,7 @@ describe("Server Test", () => {
   });
 
   describe("Delete user test", () => {
-    it("Should return 201", async () => {
+    it("Should return 200", async () => {
       const register = await request(server)
         .post("/auth/login")
         .send(user);
@@ -76,6 +84,24 @@ describe("Server Test", () => {
         .set("authorization", token);
       expect(remove.status).toBe(200);
       expect(remove.type).toBe("application/json");
+    });
+  });
+
+  describe("Add Item", () => {
+    it("Should add item", async () => {
+      const register = await request(server)
+      .post("/auth/register")
+      .send(user2); 
+      const login = await request(server)
+        .post("/auth/login")
+        .send(user2); 
+        //expect(login.body).toBe(200)
+      let token = login.body.token;
+      const additem = await request(server)
+        .post('/items/additem')
+        .send(item1)
+        .set("authorization", login.body.token);
+        expect(additem.status).toBe(201)
     });
   });
 });
