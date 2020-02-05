@@ -100,8 +100,9 @@ describe("Server Test", () => {
       const additem = await request(server)
         .post('/items/additem')
         .send(item1)
-        .set("authorization", login.body.token);
+        .set("authorization", login.body.token)
         expect(additem.status).toBe(201)
+        expect(additem.type).toBe("application/json")
     });
   });
 });
