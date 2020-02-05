@@ -37,7 +37,9 @@ router.post("/login", (req, res) => {
         console.log(token);
 
         res.status(200).json({
-          message: `Welcome ${user.username}!`,
+          message: `Welcome ${user.username}`,
+          id: `${user.id}`,
+
           token
         });
       } else if (user && user.password === "Testing") {
@@ -45,9 +47,11 @@ router.post("/login", (req, res) => {
         console.log(token);
 
         res.status(200).json({
-          message: `Welcome ${user.username}!`,
+          message: `Welcome ${user.username}`,
+          id: `${user.id}`,
           token
         });
+        console.log(id);
       } else {
         res.status(401).json({ message: "Invalid Credentials" });
       }
